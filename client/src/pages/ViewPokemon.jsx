@@ -12,6 +12,7 @@ const ViewPokemon = () => {
 
     useEffect(() => {
         API.getPokemon().then((response) => {
+            console.log(response.data);
             setBody(response.data.pokemon);
         });
     }, []);
