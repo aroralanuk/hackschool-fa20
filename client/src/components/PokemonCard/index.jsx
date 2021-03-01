@@ -2,13 +2,14 @@ import React, { useRef, useEffect } from 'react';
 import Move from '../Move';
 import CanvasDraw from 'react-canvas-draw';
 import './style.css';
+import { getContrastColor, colorPicker } from '../../color_utils';
 
 const PokemonCard = (props) => {
 
     const loadableCanvas = useRef();
 
     const displayedMoves = props.moves.map((move, key) => {
-        return <Move key={key} name={move.name} type={move.type} power={move.power} />
+        return <Move key={key} name={move.name} type={move.type} />
     });
 
     useEffect(() => {
@@ -17,9 +18,10 @@ const PokemonCard = (props) => {
     }, [props.image]);
 
     return (
-        <div className="pokemon-card-container">
+        <div className="pokemon-card-container" style={{backgroundColor:props.color,borderColor:props.color}}>
             <div className="pokemon-card-container-inner">
-                <CanvasDraw
+                <CanvasDraw 
+                    className="canvas-saved"
                     disabled
                     hideGrid
                     ref={loadableCanvas}
@@ -29,18 +31,33 @@ const PokemonCard = (props) => {
                 />
 
                 <div className="pokemoncard-data-container">
-                    <p className="pokemoncard-name">{props.name}</p>
-                    <p className="pokemoncard-description">{props.description}</p>
-                    <p className="pokemoncard-types">
-                        <span className="pokemon-type-1" style={{ color: "#000000" }}>{props.type1}</span>
-                        <span className="pokemon-type-2" style={{ color: "#000000" }}>{props.type2}</span>
-                    </p>
-                    <p>Moves: </p>
-                    <table className="moves-table">
-                        <tbody>
-                            {displayedMoves}
-                        </tbody>
-                    </table>
+                    <div className="pokemoncard-data-inner">
+                        <div className="pokemoncard-name">
+                            <p>{props.name}</p>
+                        </div>
+                        <div className="pokemoncard-description">
+                            <p>{props.description}</p>
+                        </div>
+                        <div className="pokemoncard-types">
+                            <button className="pokemon-type-1" style={{backgroundColor:colorPicker(props.type1)}}>
+                                <font color={getContrastColor(props.type1)}>{props.type1}</font>
+                            </button>
+                            { props.type2 ?
+                                <button className="pokemon-type-2" style={{backgroundColor:colorPicker(props.type2)}}>
+                                    <font color={getContrastColor(props.type2)}>{props.type2}</font>
+                                </button> : null
+                            }
+                        </div>
+                        <div className="pokemon-moves">
+                            <p className="pokemoncard-bold">Moves: </p>
+                            <table className="moves-table">
+
+                                <tbody>
+                                    {displayedMoves}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

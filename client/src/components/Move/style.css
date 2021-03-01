@@ -1,8 +1,12 @@
 .pokemon-move td {
+    margin-right: 0.4rem;
     padding: 2px;
 }
 
-.move-type {
-    font-weight: bold;
-    border-radius: 3px;
+.pokemon-move button {
+    padding: 0.5rem;
+    border: none;
+    /* background: linear-gradient(to right, #67b26b, #4ca2cb) !important; */
+    font-size: 1rem;
+    border-radius: 0.5rem;
 }

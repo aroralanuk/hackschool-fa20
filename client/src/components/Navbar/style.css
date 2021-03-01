@@ -12,6 +12,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 25px;
+    height: 10vh;
 }
 
 .title > h1 {
@@ -20,6 +21,7 @@
     - Add a left margin of 16px
     */
     color: white;
+    font-size: 3vh;
     margin-left: 16px;
 }
 

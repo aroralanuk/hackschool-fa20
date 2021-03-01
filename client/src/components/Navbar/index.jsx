@@ -5,7 +5,7 @@ const Navbar = () => {
     return (
         <div id="navbar">
             <div className="title">
-                <h1>Pokemon Generator</h1>
+                <h1>Pokemon Battle</h1>
             </div>
             <div className="nav-buttons">
                 <a href="/create">Create New Pokemon</a>
