@@ -48,7 +48,7 @@ function hex_to_RGB(hex) {
 
 function componentToHex(c) {
   var hex = c.toString(16);
-  return hex.length == 1 ? "0" + hex : hex;
+  return hex.length === 1 ? "0" + hex : hex;
 }
 
 // this function takes an array of 3 RGB integer values and converts this array into a CSS color, like this: #AAAAA

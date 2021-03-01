@@ -18,7 +18,7 @@ const ViewPokemon = () => {
     }, []);
 
     const currentPokemons = body.map((val) => {
-        let types = [val.type1, ...(val.type2 != ""? [val.type2] : [])]
+        let types = [val.type1, ...(val.type2 !== ""? [val.type2] : [])]
         let moves = val.moves.map((move) => move.type);
         // [...(val.moves[0].type != ""? [val.moves[0].type] : []),...(val.moves[1].type != ""? [val.moves[1].type] : [])]
         // console.log(moves);
