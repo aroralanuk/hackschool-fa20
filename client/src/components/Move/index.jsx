@@ -1,13 +1,15 @@
 import './style.css';
-import { colorPicker, getContrastColor } from '../../color_utils';
+import { colorPicker, getContrastType, getContrastColor } from '../../color_utils';
 
 const Move = (props) => {
     return (
         <tr className="pokemon-move">
-            <td>{props.name}</td>
+            <td>
+                <font color={getContrastColor(props.color)}>{props.name}</font>
+            </td>
             <td>
                 <button style={{backgroundColor:colorPicker(props.type)}}>
-                    <font color={getContrastColor(props.type)}>{props.type}</font>
+                    <font color={getContrastType(props.type)}>{props.type}</font>
                 </button>
             </td>
         </tr>

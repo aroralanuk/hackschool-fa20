@@ -27,13 +27,17 @@ function colorPickerDarker(type) {
    return tinycolor(colorPicker(type)).darken(5).toString()
 }
 
-function getContrastColor(type){
-  let hex = colorPicker(type);
+function getContrastColor(hex){
 	var r = parseInt(hex.substr(1,2),16);
 	var g = parseInt(hex.substr(3,2),16);
 	var b = parseInt(hex.substr(5,2),16);
 	var clr = ((r*299)+(g*587)+(b*114))/1000;
 	return (clr >= 128) ? 'black' : 'white';
+}
+
+function getContrastType(type){
+  let hex = colorPicker(type);
+	return getContrastColor(hex);
 }
 
 
@@ -89,7 +93,7 @@ function colorMixer(types,moves) {
 
 }
 
-export { colorPicker, colorMixer, colorPickerDarker, getContrastColor };
+export { colorPicker, colorMixer, colorPickerDarker, getContrastColor, getContrastType };
 
 
 

@@ -2,14 +2,14 @@ import React, { useRef, useEffect } from 'react';
 import Move from '../Move';
 import CanvasDraw from 'react-canvas-draw';
 import './style.css';
-import { getContrastColor, colorPicker } from '../../color_utils';
+import { getContrastColor, colorPicker, getContrastType } from '../../color_utils';
 
 const PokemonCard = (props) => {
 
     const loadableCanvas = useRef();
 
     const displayedMoves = props.moves.map((move, key) => {
-        return <Move key={key} name={move.name} type={move.type} />
+        return <Move key={key} name={move.name} type={move.type} color={props.color}/>
     });
 
     useEffect(() => {
@@ -33,23 +33,23 @@ const PokemonCard = (props) => {
                 <div className="pokemoncard-data-container">
                     <div className="pokemoncard-data-inner">
                         <div className="pokemoncard-name">
-                            <p>{props.name}</p>
+                            <font color={getContrastColor(props.color)}>{props.name}</font>
                         </div>
                         <div className="pokemoncard-description">
-                            <p>{props.description}</p>
+                            <font color={getContrastColor(props.color)}>{props.description}</font>
                         </div>
                         <div className="pokemoncard-types">
                             <button className="pokemon-type-1" style={{backgroundColor:colorPicker(props.type1)}}>
-                                <font color={getContrastColor(props.type1)}>{props.type1}</font>
+                                <font color={getContrastType(props.type1)}>{props.type1}</font>
                             </button>
                             { props.type2 ?
                                 <button className="pokemon-type-2" style={{backgroundColor:colorPicker(props.type2)}}>
-                                    <font color={getContrastColor(props.type2)}>{props.type2}</font>
+                                    <font color={getContrastType(props.type2)}>{props.type2}</font>
                                 </button> : null
                             }
                         </div>
                         <div className="pokemon-moves">
-                            <p className="pokemoncard-bold">Moves: </p>
+                            <font className="pokemoncard-bold" color={getContrastColor(props.color)}>Moves: </font>
                             <table className="moves-table">
 
                                 <tbody>

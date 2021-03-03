@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const server = 'https://pokemon-battle-pogchamp.herokuapp.com';
+const server = (process.env.NODE_ENV === 'production') ? 'https://pokemon-battle-pogchamp.herokuapp.com' : 'http://localhost:5000';
 
 const API = {
     getPokemon: function () {
