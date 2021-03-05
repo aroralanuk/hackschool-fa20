@@ -2,6 +2,7 @@ const express = require('express');
 const config = require('./config');
 const cors = require('cors');
 const router = require('./api');
+const auth = require('./api/users');
 const server = express();
 const mongoose = require('mongoose');
 
@@ -11,6 +12,7 @@ server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 
 server.use('/api', router);
+server.use('/auth', auth);
 
 mongoose.connect(config.databaseUrl, {
     useNewUrlParser: true,

@@ -1,6 +1,5 @@
 const express = require('express');
 const config = require('../config');
-const Pokemon = require('../models/pokemon');
 const fs = require('firebase-admin');
 
 const serviceAccount = require(config.firestoreKeyPath);
@@ -15,7 +14,6 @@ const router = express.Router();
 const pokemons = db.collection('pokemons'); 
 
 router.get('/pokemon', async (req, res) => {
-    
     let snapshot = await pokemons.get();
     let pokemon = snapshot.docs.map(doc => doc.data()); 
     res.status(200).json({ pokemon });
