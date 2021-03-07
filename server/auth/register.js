@@ -8,15 +8,17 @@ module.exports = function validateRegisterInput(data) {
     data.password = !isEmpty(data.password) ? data.password : "";
     data.password2 = !isEmpty(data.password2) ? data.password2 : "";
 
+    console.log(data.username);
+
     if (Validator.isEmpty(data.username)) {
-        errors.name = "Username is required";
+        errors.username = "Username is required";
     }
 
     if (!Validator.isLength(data.password, { min: 6, max: 100})) {
         errors.password = "Password is too short";
     }
 
-    if (Validator.equals(data.password,data.password2)) {
+    if (!Validator.equals(data.password,data.password2)) {
         errors.password2 = "Passwords must match";
     }
 

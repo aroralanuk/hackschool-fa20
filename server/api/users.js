@@ -38,11 +38,54 @@ auth.post("/register", async (req,res) => {
                         password: hash
                     }
                 );
+                console.log(newUser.id);
                 return res.status(201).json({user:newUser});
             })
         });
     }
     
 });
+
+auth.post("/login", async (req,res) => {
+
+    const { errors, isValid } = validateLoginInput(req.body);
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    const snapshot = await Users.where("username", '==', req.body.username).get();
+    const user = snapshot.docs.map(doc => doc.data())[0]; 
+    const user_id = snapshot.docs.map(doc => doc.id)[0];
+    if(user.empty){
+        return res.status(404).json({error:"email not found"});
+    }
+    bcrypt.compare(req.body.password, user.password).then(isMatch => {
+        if (isMatch) { 
+            const payload = {
+                id: user_id,
+                name: user.username
+            };
+        
+            console.log(payload);
+            jwt.sign(
+                payload,
+                config.secretOrKey,
+                {
+                    expiresIn: 31556926
+                },
+                (err, token) => {
+                    console.log(token);
+                    res.json({
+                        success: true,
+                        token: "Bearer " + token
+                    });
+                }
+            );
+
+        } else {
+            return res.status(400).json({error:"password incorrect"})
+        }
+    })
+})
 
 module.exports = auth;
