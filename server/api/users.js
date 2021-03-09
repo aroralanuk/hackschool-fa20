@@ -66,7 +66,6 @@ auth.post("/login", async (req,res) => {
                 name: user.username
             };
         
-            console.log(payload);
             jwt.sign(
                 payload,
                 config.secretOrKey,
@@ -74,7 +73,6 @@ auth.post("/login", async (req,res) => {
                     expiresIn: 31556926
                 },
                 (err, token) => {
-                    console.log(token);
                     res.json({
                         success: true,
                         token: "Bearer " + token
