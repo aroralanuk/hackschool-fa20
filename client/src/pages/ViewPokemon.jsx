@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+
+import { logoutUser } from "../actions/authActions";
 import Navbar from '../components/Navbar';
 import API from '../API';
 import './style.css';
@@ -8,7 +12,7 @@ import { colorMixer } from '../color_utils';
 /**
  * Component for the view pokemon page
  */
-const ViewPokemon = () => {
+const ViewPokemon = (props) => {
     const [body, setBody] = useState([]);
 
     useEffect(() => {
@@ -36,4 +40,16 @@ const ViewPokemon = () => {
     );
 };
 
-export default ViewPokemon;
+ViewPokemon.propTypes = {
+    logoutUser: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+    auth: state.auth
+});
+
+export default connect(
+    mapStateToProps,
+    { logoutUser }
+)(ViewPokemon);

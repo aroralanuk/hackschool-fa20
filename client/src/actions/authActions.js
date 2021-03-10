@@ -3,10 +3,14 @@ import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
 
 import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING } from "./types";
+const server =
+  process.env.NODE_ENV === "production"
+    ? "https://pokemon-battle-pogchamp.herokuapp.com"
+    : "http://localhost:5000";
 
 export const registerUser = (userData, history) => (dispatch) => {
   axios
-    .post("./api/users/register", userData)
+    .post(server + "/api/users/register", userData)
     .then((res) => history.push("./login"))
     .catch((err) =>
       dispatch({
@@ -18,7 +22,7 @@ export const registerUser = (userData, history) => (dispatch) => {
 
 export const loginUser = (userData) => (dispatch) => {
   axios
-    .post("./api/users/login", userData)
+    .post(server + "/api/users/login", userData)
     .then((res) => {
       const { token } = res.data;
       localStorage.setItem("jwtToken", token);
@@ -34,13 +38,20 @@ export const loginUser = (userData) => (dispatch) => {
     );
 };
 
-export const setUserLoading = () => {
+export const setCurrentUser = (decoded) => {
   return {
-    type: USER_LOADINGa,
+    type: SET_CURRENT_USER,
+    payload: decoded,
   };
 };
 
-export const logoutUser = () => {
+export const setUserLoading = () => {
+  return {
+    type: USER_LOADING,
+  };
+};
+
+export const logoutUser = () => (dispatch) => {
   localStorage.removeItem("jwtToken");
   setAuthToken(false);
   dispatch(setCurrentUser({}));

@@ -1,5 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { loginUser } from "../../actions/authActions";
+import classnames from "classnames";
+
 class Login extends Component {
     constructor() {
         super();
@@ -8,6 +13,16 @@ class Login extends Component {
         password: "",
         errors: {}
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.auth.isAuthenticated) {
+            this.props.history.push("/view");
+        } else if (nextProps.errors) {
+            this.setState({
+                errors: nextProps.errors
+            });
+        }
     }
 
     onChange = e => {
@@ -20,6 +35,7 @@ class Login extends Component {
             username: this.state.username,
             password: this.state.password
         };
+        this.props.loginUser(userData); 
         console.log(userData);
     };
 
@@ -49,8 +65,15 @@ class Login extends Component {
                     error={errors.username}
                     id="username"
                     type="text"
+                    className={classnames("", {
+                        invalid: errors.username || errors.usernamenotfound
+                    })}
                     />
                     <label htmlFor="username">Email</label>
+                    <span className="red-text">
+                        {errors.username}
+                        {errors.usernamenotfound}
+                    </span>
                 </div>
                 <div className="input-field col s12">
                     <input
@@ -59,8 +82,15 @@ class Login extends Component {
                     error={errors.password}
                     id="password"
                     type="password"
+                    className={classnames("", {
+                        invalid: errors.password || errors.passwordincorrect
+                    })}
                     />
                     <label htmlFor="password">Password</label>
+                    <span className="red-text">
+                        {errors.password}
+                        {errors.passwordincorrect}
+                    </span>
                 </div>
                 <div className="col s12" style={{ paddingLeft: "11.250px" }}>
                     <button
@@ -83,4 +113,16 @@ class Login extends Component {
     );
   }
 }
-export default Login;
+Login.propTypes = {
+    loginUser: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired
+  };
+  const mapStateToProps = state => ({
+    auth: state.auth,
+    errors: state.errors
+  });
+  export default connect(
+    mapStateToProps,
+    { loginUser }
+  )(Login);
