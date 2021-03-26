@@ -1,47 +1,51 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { registerUser } from "../../actions/authActions";
 import classnames from "classnames";
-class Register extends Component {
-    constructor() {
-            super();
-            this.state = {
-            username: "",
-            password: "",
-            password2: "",
+
+const Register = (props) => {
+    const [user,setUser] = useState(
+        {
+            username: '',
+            password: '',
+            password2: '',
             errors: {}
-        };
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.errors) {
-          this.setState({
-            errors: nextProps.errors
-          });
         }
-      }
+    )
     
+    useEffect(() => {
+        if (props.errors) {
+            setUser({
+                errors: props.errors
+            });
+        } 
+    }, [props])
 
-    onChange = e => {
-        this.setState({ [e.target.id]: e.target.value });
+    const onChange = e => {
+        let newInfo = {[e.target.id]:e.target.value};
+        setUser({...user,...newInfo});
+        // console.log(user);
     };
 
-    onSubmit = e => {
+    const onSubmit = e => {
         e.preventDefault();
         const newUser = {
-            username: this.state.username,
-            password: this.state.password,
-            password2: this.state.password2
+            username: user.username,
+            password: user.password,
+            password2: user.password2
         };
-        console.log(newUser);
-        this.props.registerUser(newUser, this.props.history); 
+        props.registerUser(newUser, props.history); 
+        if (user.errors) {
+            setUser({...user,password:'',password2:''});
+        }
+        // console.log(user);
     };
 
-    render() {
-        const { errors } = this.state;
-        return (
+    const errors = user.errors || {};
+
+    return (
             <div className="container">
                 <div className="row">
                 <div className="col s8 offset-s2">
@@ -57,11 +61,11 @@ class Register extends Component {
                         Already have an account? <Link to="/login">Log in</Link>
                     </p>
                     </div>
-                    <form noValidate onSubmit={this.onSubmit}>
+                    <form noValidate onSubmit={onSubmit}>
                     <div className="input-field col s12">
                         <input
-                        onChange={this.onChange}
-                        value={this.state.username}
+                        onChange={onChange}
+                        value={user.username}
                         error={errors.username}
                         id="username"
                         type="text"
@@ -74,8 +78,8 @@ class Register extends Component {
                     </div>
                     <div className="input-field col s12">
                         <input
-                        onChange={this.onChange}
-                        value={this.state.password}
+                        onChange={onChange}
+                        value={user.password}
                         error={errors.password}
                         id="password"
                         type="password"
@@ -88,8 +92,8 @@ class Register extends Component {
                     </div>
                     <div className="input-field col s12">
                         <input
-                        onChange={this.onChange}
-                        value={this.state.password2}
+                        onChange={onChange}
+                        value={user.password2}
                         error={errors.password2}
                         id="password2"
                         type="password"
@@ -119,7 +123,6 @@ class Register extends Component {
                 </div>
             </div>
     );
-  }
 }
 
 Register.propTypes = {

@@ -1,46 +1,51 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { loginUser } from "../../actions/authActions";
 import classnames from "classnames";
 
-class Login extends Component {
-    constructor() {
-        super();
-        this.state = {
-        username: "",
-        password: "",
-        errors: {}
-        };
-    }
+const Login = (props) => {
+    const [user,setUser] = useState(
+        {
+            'username': "",
+            'password': "",
+            'errors': {}
+        }
+    )
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.auth.isAuthenticated) {
-            this.props.history.push("/view");
-        } else if (nextProps.errors) {
-            this.setState({
-                errors: nextProps.errors
+    useEffect(() => {
+        if (props.auth.isAuthenticated) {
+            props.history.push("/view");
+        } else if (props.errors) {
+            setUser({
+                errors: props.errors
             });
         }
-    }
+    }, [props])
 
-    onChange = e => {
-        this.setState({ [e.target.id]: e.target.value });
+    const onChange = e => {
+        let newUser = {...user};
+        let newInfo = {[e.target.id]:e.target.value};
+        setUser({...user,...newInfo});
+        // console.log(user);
     };
 
-    onSubmit = e => {
+    const onSubmit = e => {
         e.preventDefault();
         const userData = {
-            username: this.state.username,
-            password: this.state.password
+            username: user.username,
+            password: user.password
         };
-        this.props.loginUser(userData); 
-        console.log(userData);
+        props.loginUser(userData); 
+        console.log(user);
+        setUser({...user,username:'',password:''});
+        console.log(user);
     };
 
-    render() {
-        const { errors } = this.state;
+    const errors = user.errors || {};
+    // console.log(errors);
+
     return (
         <div className="container">
             <div style={{ marginTop: "4rem" }} className="row">
@@ -57,11 +62,11 @@ class Login extends Component {
                     Don't have an account? <Link to="/register">Register</Link>
                 </p>
                 </div>
-                <form noValidate onSubmit={this.onSubmit}>
+                <form noValidate onSubmit={onSubmit}>
                 <div className="input-field col s12">
                     <input
-                    onChange={this.onChange}
-                    value={this.state.username}
+                    onChange={onChange}
+                    value={user.username}
                     error={errors.username}
                     id="username"
                     type="text"
@@ -77,8 +82,8 @@ class Login extends Component {
                 </div>
                 <div className="input-field col s12">
                     <input
-                    onChange={this.onChange}
-                    value={this.state.password}
+                    onChange={onChange}
+                    value={user.password}
                     error={errors.password}
                     id="password"
                     type="password"
@@ -111,8 +116,8 @@ class Login extends Component {
             </div>
         </div>
     );
-  }
 }
+
 Login.propTypes = {
     loginUser: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,

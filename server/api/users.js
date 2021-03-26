@@ -51,7 +51,7 @@ auth.post("/login", async (req, res) => {
   const snapshot = await Users.where("username", "==", req.body.username).get();
   const user = snapshot.docs.map((doc) => doc.data())[0];
   const user_id = snapshot.docs.map((doc) => doc.id)[0];
-  if (user.empty) {
+  if (!user || user.empty) {
     return res.status(404).json({ usernamenotfound: "username not found" });
   }
   bcrypt.compare(req.body.password, user.password).then((isMatch) => {
