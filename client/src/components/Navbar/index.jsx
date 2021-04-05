@@ -19,7 +19,7 @@ const Navbar = (props) => {
             </div>
             <div className="nav-buttons">
                 <Link to="/create">Create New Pokemon</Link>
-                <Link to="/view">View All Pokemon</Link>
+                <Link to="/view">View my PokeDex</Link>
                 <button onClick={onLogoutClick} 
                  className="btn waves-effect waves-light hoverable blue accent-3" style={{marginRight: '20px'}}>
                     Logout

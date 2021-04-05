@@ -9,7 +9,7 @@ const PokemonCard = (props) => {
     const loadableCanvas = useRef();
 
     const displayedMoves = props.moves.map((move, key) => {
-        return <Move key={key} name={move.name} type={move.type} color={props.color}/>
+        return <Move key={key} name={move.name} type={move.type} power={move.power} color={props.color}/>
     });
 
     useEffect(() => {

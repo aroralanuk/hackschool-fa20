@@ -12,6 +12,9 @@ const Move = (props) => {
                     <font color={getContrastType(props.type)}>{props.type}</font>
                 </button>
             </td>
+            {props.power && 
+                <font color={getContrastColor(props.color)}>{props.power}</font>
+            }
         </tr>
     )
 }

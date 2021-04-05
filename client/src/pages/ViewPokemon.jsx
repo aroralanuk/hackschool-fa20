@@ -33,6 +33,7 @@ const ViewPokemon = (props) => {
     return (
         <div>
             <Navbar />
+            <h5 className="pokedex-heading">My PokeDex</h5>
             <div className="pokemon">
                 {currentPokemons}
             </div>

@@ -12,7 +12,7 @@ const Type = ({ id }) => {
     }
 
     return (
-        <select id={id} name={id}>
+        <select id={id} name={id} className="browser-default">
             {emptyOption}
             <option>Normal</option>
             <option>Fire</option>

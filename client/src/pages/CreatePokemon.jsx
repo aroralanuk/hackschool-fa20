@@ -8,10 +8,22 @@ import CanvasDraw from 'react-canvas-draw';
 const CreatePokemon = () => {
     const [color, setColor] = useState('#000');
     const canvasInput = useRef();
+    const [movesSP, setMovesSP] = useState(
+        {
+            move1power: 0,
+            move2power: 0,
+            move3power: 0,
+            move4power: 0
+        }
+    );
 
     const createPokemon = async (e) => {
         e.preventDefault();
         const req = e.target;
+        if (powerLeft() < 0){
+            alert('you exceeded the skill points allocated!!!')
+            return
+        }
         const unfilteredMoves = [
             {
                 name: req.move1.value,
@@ -39,6 +51,8 @@ const CreatePokemon = () => {
             return move.name && move.type && move.power > 0;
         });
 
+        
+
         const payload = {
             pokemon: {
                 name: req.name.value,
@@ -53,6 +67,20 @@ const CreatePokemon = () => {
         alert('Created successfully')
     }
 
+    const powerChange = async (e) => {
+        if (e.target.value.length === 0){
+            await setMovesSP({...movesSP, [e.target.id]: 0})
+        } else {
+            await setMovesSP({...movesSP, [e.target.id]: parseInt(e.target.value)})
+        }
+
+            powerLeft();
+        }
+
+    const powerLeft = () => 
+        (100 - (movesSP.move1power + movesSP.move2power + movesSP.move3power + movesSP.move4power))
+
+
     return (
         <div>
             <Navbar />
@@ -63,7 +91,7 @@ const CreatePokemon = () => {
                         <CanvasDraw hideGrid={true}
                             hideInterface={true}
                             brushColor={color}
-                            brushRadius={5}
+                            brushRadius={3}
                             lazyRadius={0}
                             ref={canvasInput}
                             canvasWidth={500}
@@ -85,13 +113,13 @@ const CreatePokemon = () => {
                         }}>Undo</button>
                     </div>
                 </div>
-
+                
                 <div className="pokemon-form">
-                    <h2>Create a Pokemon</h2>
-                    <div className="form-row">
+                    <h5>Create a Pokemon</h5>
+                    <div className="form-row col">
                         <label htmlFor="name">Name</label>
                         <input id="name" name="name" required></input>
-                        <button>Generate Random Name</button>
+                        {/* <button>Generate Random Name</button> */}
                     </div>
                     <div className="form-row">
                         <label htmlFor="desc">Description</label>
@@ -103,13 +131,14 @@ const CreatePokemon = () => {
                         <label htmlFor="type2">Type 2</label>
                         <Type id={'type2'} />
                     </div>
+                    <h5>Skill points left: {powerLeft()}</h5>
                     <div className="form-row">
                         <label htmlFor="move1">Move 1</label>
                         <input id="move1" name="move1" required></input>
                         <label htmlFor="move1type">Type</label>
                         <Type id={'move1type'} />
                         <label htmlFor="move1power">Power</label>
-                        <input type="number" id="move1power" name="move1power" min="0" max="100" defaultValue="0"></input>
+                        <input type="number" id="move1power" name="move1power" min="0" max="100" defaultValue="0" onChange={powerChange}></input>
                     </div>
                     <div className="form-row">
                         <label htmlFor="move2">Move 2</label>
@@ -117,7 +146,7 @@ const CreatePokemon = () => {
                         <label htmlFor="move2type">Type</label>
                         <Type id={'move2type'} />
                         <label htmlFor="move2power">Power</label>
-                        <input type="number" id="move2power" name="move2power" min="0" max="100" defaultValue="0"></input>
+                        <input type="number" id="move2power" name="move2power" min="0" max="100" defaultValue="0" onChange={powerChange}></input>
                     </div>
                     <div className="form-row">
                         <label htmlFor="move3">Move 3</label>
@@ -125,7 +154,7 @@ const CreatePokemon = () => {
                         <label htmlFor="move3type">Type</label>
                         <Type id={'move3type'} />
                         <label htmlFor="move3power">Power</label>
-                        <input type="number" id="move3power" name="move3power" min="0" max="100" defaultValue="0"></input>
+                        <input type="number" id="move3power" name="move3power" min="0" max="100" defaultValue="0" onChange={powerChange}></input>
                     </div>
                     <div className="form-row">
                         <label htmlFor="move4">Move 4</label>
@@ -133,11 +162,12 @@ const CreatePokemon = () => {
                         <label htmlFor="move4type">Type</label>
                         <Type id={'move4type'} />
                         <label htmlFor="move4power">Power</label>
-                        <input type="number" id="move4power" name="move4power" min="0" max="100" defaultValue="0"></input>
+                        <input type="number" id="move4power" name="move4power" min="0" max="100" defaultValue="0" onChange={powerChange}></input>
                     </div>
                     <input type="submit" value="Submit"></input>
                 </div>
             </form>
+            
         </div>
     );
 };
